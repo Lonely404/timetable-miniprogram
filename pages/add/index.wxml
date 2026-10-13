@@ -1,0 +1,132 @@
+<!-- 新增 / 编辑课程 -->
+<view class="app {{isDark ? 'theme-dark' : ''}}" style="--nav-h:{{statusBarHeight + 44}}px">
+
+  <!-- 导航栏 -->
+  <view class="nav" style="padding-top:{{statusBarHeight}}px">
+    <view class="nav-inner">
+      <view class="nav-side" bindtap="cancel">取消</view>
+      <view class="nav-center">{{isEdit ? '编辑课程' : '新增课程'}}</view>
+      <view class="nav-side nav-side-primary" bindtap="save">保存</view>
+    </view>
+  </view>
+
+  <view class="page-body">
+
+    <view class="form-title">课程信息</view>
+    <view class="fgroup">
+      <view class="frow">
+        <view class="frow-label">课程名</view>
+        <input
+          class="frow-input"
+          value="{{name}}"
+          placeholder="请输入课程名称"
+          placeholder-class="ph"
+          bindinput="onName"
+          maxlength="30"
+        />
+      </view>
+      <view class="frow">
+        <view class="frow-label">教师</view>
+        <input
+          class="frow-input"
+          value="{{teacher}}"
+          placeholder="请输入授课教师"
+          placeholder-class="ph"
+          bindinput="onTeacher"
+          maxlength="20"
+        />
+      </view>
+      <view class="frow">
+        <view class="frow-label">地点</view>
+        <input
+          class="frow-input"
+          value="{{room}}"
+          placeholder="请输入上课地点"
+          placeholder-class="ph"
+          bindinput="onRoom"
+          maxlength="30"
+        />
+      </view>
+    </view>
+
+    <!-- 星期 -->
+    <view class="fblock">
+      <view class="flabel">上课时间 · 星期</view>
+      <view class="chips-seven">
+        <view
+          class="ch wide {{item.sel ? 'on brand' : ''}}"
+          wx:for="{{days}}"
+          wx:key="key"
+          data-key="{{item.key}}"
+          bindtap="pickDay"
+        >{{item.name}}</view>
+      </view>
+    </view>
+
+    <!-- 节次 -->
+    <view class="fblock">
+      <view class="flabel">节次</view>
+      <view class="chips">
+        <view
+          class="ch {{item.sel ? 'on brand' : ''}}"
+          wx:for="{{slots}}"
+          wx:key="key"
+          data-key="{{item.key}}"
+          bindtap="pickSlot"
+        >{{item.label}}</view>
+      </view>
+    </view>
+
+    <!-- 周次 -->
+    <view class="fblock">
+      <view class="flabel">上课周次</view>
+      <view class="chips">
+        <view
+          class="ch {{item.sel ? 'on' : ''}}"
+          wx:for="{{weekOptions}}"
+          wx:key="text"
+          data-text="{{item.text}}"
+          bindtap="pickWeeks"
+        >{{item.text}}</view>
+      </view>
+    </view>
+
+    <!-- 颜色 -->
+    <view class="fblock">
+      <view class="flabel">标记颜色</view>
+      <view class="picker">
+        <view
+          class="pk {{item.sel ? 'on' : ''}}"
+          wx:for="{{pickerColors}}"
+          wx:key="key"
+          style="{{item.style}}"
+          data-key="{{item.key}}"
+          bindtap="pickColor"
+        >
+          <view class="ic-check"></view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 提醒 -->
+    <view class="fgroup">
+      <view class="frow">
+        <view class="frow-switch-label">课前 15 分钟提醒</view>
+        <view class="switch {{remind ? '' : 'off'}}" bindtap="toggleRemind">
+          <view class="switch-knob"></view>
+        </view>
+      </view>
+    </view>
+
+    <view class="safe-bottom"></view>
+    <view class="safe-bottom"></view>
+  </view>
+
+  <!-- 底部保存 -->
+  <view class="dockbar">
+    <button class="btn-grad" bindtap="save">保存课程</button>
+  </view>
+
+  <!-- Toast -->
+  <view class="toast {{toastOn ? 'on' : ''}}">{{toastMsg}}</view>
+</view>

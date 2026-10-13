@@ -1,0 +1,17 @@
+{
+  "pages": [
+    "pages/timetable/index",
+    "pages/import/index",
+    "pages/add/index"
+  ],
+  "window": {
+    "navigationBarTitleText": "我的课表",
+    "navigationBarBackgroundColor": "#F6F7FB",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#F6F7FB",
+    "backgroundTextStyle": "light"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

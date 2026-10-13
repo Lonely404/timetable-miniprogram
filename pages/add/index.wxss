@@ -1,0 +1,135 @@
+/* ============================================================
+   新增 / 编辑课程页样式
+   （.nav / .nav-side / .nav-center / .ic-check / .page-body
+     均定义在 app.wxss）
+   ============================================================ */
+
+.form-title {
+  padding: 0 40rpx 24rpx;
+  font-size: 25rpx;
+  font-weight: 600;
+  color: var(--ink-3);
+  letter-spacing: 2rpx;
+}
+
+/* ---------- 输入分组 ---------- */
+.fgroup {
+  background: var(--surf);
+  border-radius: 36rpx;
+  border: 2rpx solid var(--line);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  margin: 0 40rpx 32rpx;
+}
+.frow {
+  display: flex;
+  align-items: center;
+  gap: 24rpx;
+  padding: 28rpx 32rpx;
+  position: relative;
+}
+.frow + .frow::before {
+  content: "";
+  position: absolute;
+  left: 32rpx; right: 0; top: 0;
+  height: 2rpx;
+  background: var(--line);
+}
+.frow-label {
+  font-size: 27rpx;
+  color: var(--ink-2);
+  width: 124rpx;
+  flex: none;
+}
+.frow-input {
+  flex: 1;
+  min-width: 0;
+  font-size: 28rpx;
+  color: var(--ink);
+  background: transparent;
+}
+.ph { color: var(--ink-4); }
+
+.frow-switch-label {
+  flex: 1;
+  font-size: 28rpx;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+/* ---------- 选项块 ---------- */
+.fblock { margin: 0 40rpx 32rpx; }
+.flabel {
+  font-size: 25rpx;
+  font-weight: 600;
+  color: var(--ink-3);
+  margin-bottom: 20rpx;
+}
+.chips { display: flex; flex-wrap: wrap; gap: 16rpx; }
+.chips-seven { display: flex; gap: 12rpx; }
+
+.ch {
+  font-size: 25rpx;
+  padding: 16rpx 28rpx;
+  border-radius: 22rpx;
+  background: var(--surf);
+  border: 2rpx solid var(--line);
+  color: var(--ink-2);
+  line-height: 1.3;
+}
+.ch.wide {
+  flex: 1;
+  padding: 16rpx 0;
+  text-align: center;
+}
+.ch.on {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--bg);
+  font-weight: 600;
+}
+.ch.on.brand {
+  background: linear-gradient(135deg, #5B6CFF 0%, #8B5CF6 100%);
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 16rpx 32rpx -16rpx rgba(91, 108, 255, 0.7);
+}
+
+/* ---------- 颜色选择 ----------
+   圈选外环用 --ring（由 wxml 内联写入课程色），
+   对勾用 currentColor 控制，避免被内联 color 覆盖。 */
+.picker { display: flex; gap: 22rpx; }
+.pk {
+  width: 68rpx; height: 68rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.pk .ic-check { color: transparent; }
+.pk.on .ic-check { color: #fff; }
+.pk.on {
+  box-shadow: 0 0 0 6rpx var(--bg), 0 0 0 10rpx var(--ring);
+}
+
+/* ---------- 开关 ---------- */
+.switch {
+  width: 92rpx;
+  height: 56rpx;
+  border-radius: 30rpx;
+  background: linear-gradient(135deg, #5B6CFF 0%, #8B5CF6 100%);
+  flex: none;
+  position: relative;
+  transition: background 0.2s ease;
+}
+.switch.off { background: var(--line-2); }
+.switch-knob {
+  position: absolute;
+  top: 6rpx; right: 6rpx;
+  width: 44rpx; height: 44rpx;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 4rpx 10rpx rgba(15, 23, 42, 0.22);
+  transition: right 0.2s ease;
+}
+.switch.off .switch-knob { right: calc(100% - 50rpx); }

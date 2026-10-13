@@ -1,0 +1,128 @@
+<!-- 导入课表 -->
+<view class="app {{isDark ? 'theme-dark' : ''}}" style="--nav-h:{{statusBarHeight + 44}}px">
+
+  <!-- 自定义导航栏 -->
+  <view class="nav" style="padding-top:{{statusBarHeight}}px">
+    <view class="nav-inner">
+      <view class="nav-side" bindtap="back"><view class="ic-chev ic-left"></view></view>
+      <view class="nav-center">导入课表</view>
+      <view class="nav-side nav-side-text" bindtap="showTip">帮助</view>
+    </view>
+  </view>
+
+  <view class="page-body">
+
+    <!-- 步骤条 -->
+    <view class="steps">
+      <view class="step {{stage >= 1 ? 'on' : ''}}">
+        <view class="step-dot">1</view>
+        <view class="step-cap">选择文件</view>
+      </view>
+      <view class="step-line {{stage >= 2 ? 'on' : ''}}"></view>
+      <view class="step {{stage >= 2 ? 'on' : ''}}">
+        <view class="step-dot">2</view>
+        <view class="step-cap">智能识别</view>
+      </view>
+      <view class="step-line {{stage >= 3 ? 'on' : ''}}"></view>
+      <view class="step {{stage >= 3 ? 'on' : ''}}">
+        <view class="step-dot">3</view>
+        <view class="step-cap">确认导入</view>
+      </view>
+    </view>
+
+    <!-- ---------- 阶段 1：选择文件 ---------- -->
+    <block wx:if="{{stage === 1}}">
+      <view class="drop" bindtap="chooseFile">
+        <view class="drop-icon">
+          <view class="ic-upload"></view>
+        </view>
+        <view class="drop-title">选择或拖入课表文件</view>
+        <view class="drop-desc">支持教务系统导出的 .pdf / .xlsx / 截图\n单个文件不超过 20 MB</view>
+      </view>
+
+      <view class="hint">
+        <view class="hint-title">从哪里拿到课表文件？</view>
+        <view class="hint-item">1. 登录学校教务系统，进入「我的课表」</view>
+        <view class="hint-item">2. 使用浏览器的「打印 → 另存为 PDF」</view>
+        <view class="hint-item">3. 把 PDF 发到微信「文件传输助手」后回到这里选择</view>
+      </view>
+    </block>
+
+    <!-- ---------- 阶段 2：识别中 ---------- -->
+    <block wx:if="{{stage === 2}}">
+      <view class="parsing">
+        <view class="ring">
+          <view class="ring-track"></view>
+          <view class="ring-arc"></view>
+        </view>
+        <view class="parsing-title">正在识别课表…</view>
+        <view class="parsing-desc">解析表格结构 · 匹配时间与地点</view>
+        <view class="pbar"><view class="pbar-fill" style="width:{{progress}}%"></view></view>
+        <view class="pct">{{progress}}%</view>
+      </view>
+
+      <view class="filecard">
+        <view class="pdf-ico">PDF</view>
+        <view class="fc-body">
+          <view class="fc-name">{{fileName}}</view>
+          <view class="fc-size">{{fileSizeText}}</view>
+        </view>
+      </view>
+    </block>
+
+    <!-- ---------- 阶段 3：确认导入 ---------- -->
+    <block wx:if="{{stage === 3}}">
+      <view class="filecard">
+        <view class="pdf-ico">PDF</view>
+        <view class="fc-body">
+          <view class="fc-name">{{fileName}}</view>
+          <view class="fc-size">{{fileSizeText}}</view>
+          <view class="ok">
+            <view class="ic-check"></view>
+            <text>识别完成，共找到 {{foundCount}} 门课程</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="result-head">
+        <view class="result-title">识别结果</view>
+        <view class="result-count" bindtap="toggleAll">
+          已选 {{pickedCount}} / {{foundCount}}
+        </view>
+      </view>
+
+      <view class="rlist">
+        <view
+          class="ritem"
+          wx:for="{{parsed}}"
+          wx:key="key"
+          data-key="{{item.key}}"
+          bindtap="toggleItem"
+        >
+          <view class="sw {{item.color}}"></view>
+          <view class="rb">
+            <view class="rb-name">{{item.name}}</view>
+            <view class="rb-meta">{{item.metaText}}</view>
+          </view>
+          <view class="ck {{item.selected ? '' : 'off'}}">
+            <view class="ic-check"></view>
+          </view>
+        </view>
+      </view>
+
+      <view class="safe-bottom"></view>
+      <view class="safe-bottom"></view>
+    </block>
+  </view>
+
+  <!-- 阶段 3 底部操作栏 -->
+  <view class="dockbar" wx:if="{{stage === 3}}">
+    <button
+      class="btn-grad {{pickedCount ? '' : 'is-disabled'}}"
+      bindtap="doImport"
+    >导入 {{pickedCount}} 门课程</button>
+  </view>
+
+  <!-- Toast -->
+  <view class="toast {{toastOn ? 'on' : ''}}">{{toastMsg}}</view>
+</view>

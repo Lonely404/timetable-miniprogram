@@ -1,0 +1,261 @@
+/* ============================================================
+   导入课表页样式
+   （.nav / .nav-inner / .nav-side / .nav-center / .ic-chev /
+     .c1-.c6 / .ic-check / .page-body 均定义在 app.wxss）
+   ============================================================ */
+
+/* ---------- 步骤条 ---------- */
+.steps {
+  display: flex;
+  align-items: flex-start;
+  padding: 32rpx 52rpx 40rpx;
+}
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14rpx;
+  flex: none;
+}
+.step-dot {
+  width: 48rpx; height: 48rpx;
+  border-radius: 50%;
+  background: var(--bg-2);
+  color: var(--ink-3);
+  font-size: 23rpx;
+  font-weight: 650;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.step-cap { font-size: 21rpx; color: var(--ink-3); white-space: nowrap; }
+.step.on .step-dot {
+  background: linear-gradient(135deg, #5B6CFF 0%, #8B5CF6 100%);
+  color: #fff;
+  box-shadow: 0 12rpx 28rpx -12rpx rgba(91, 108, 255, 0.7);
+}
+.step.on .step-cap { color: #5A63D8; font-weight: 600; }
+.theme-dark .step.on .step-cap { color: #A3AEFF; }
+
+.step-line {
+  flex: 1;
+  height: 3rpx;
+  background: var(--line-2);
+  margin: 24rpx 12rpx 0;
+  border-radius: 4rpx;
+}
+.step-line.on { background: linear-gradient(90deg, #5B6CFF, #8B5CF6); }
+
+/* ---------- 上传区 ---------- */
+.drop {
+  margin: 4rpx 40rpx 36rpx;
+  padding: 52rpx 40rpx;
+  border-radius: 48rpx;
+  border: 3rpx dashed var(--line-2);
+  background: var(--surf);
+  text-align: center;
+}
+.drop-icon {
+  width: 108rpx; height: 108rpx;
+  border-radius: 34rpx;
+  background: var(--brand-soft);
+  margin: 0 auto 28rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.drop-title { font-size: 29rpx; font-weight: 600; color: var(--ink); margin-bottom: 14rpx; }
+.drop-desc { font-size: 23rpx; color: var(--ink-3); line-height: 1.7; }
+
+/* 上传箭头图标（纯 CSS） */
+.ic-upload {
+  width: 46rpx; height: 34rpx;
+  border: 5rpx solid var(--brand);
+  border-top: none;
+  border-radius: 0 0 10rpx 10rpx;
+  position: relative;
+}
+.ic-upload::before {
+  content: "";
+  position: absolute;
+  left: 50%; top: -26rpx;
+  width: 6rpx; height: 34rpx;
+  margin-left: -3rpx;
+  border-radius: 4rpx;
+  background: var(--brand);
+}
+.ic-upload::after {
+  content: "";
+  position: absolute;
+  left: 50%; top: -28rpx;
+  width: 20rpx; height: 20rpx;
+  margin-left: -10rpx;
+  border-top: 6rpx solid var(--brand);
+  border-left: 6rpx solid var(--brand);
+  border-radius: 4rpx 0 0 0;
+  transform: rotate(45deg);
+}
+
+/* ---------- 提示 ---------- */
+.hint {
+  margin: 0 40rpx;
+  padding: 32rpx 36rpx;
+  border-radius: 36rpx;
+  background: var(--bg-2);
+}
+.hint-title { font-size: 25rpx; font-weight: 600; color: var(--ink-2); margin-bottom: 18rpx; }
+.hint-item { font-size: 24rpx; color: var(--ink-3); line-height: 1.9; }
+
+/* ---------- 识别中 ---------- */
+.parsing {
+  margin: 4rpx 40rpx 36rpx;
+  padding: 68rpx 48rpx;
+  border-radius: 48rpx;
+  background: var(--surf);
+  border: 2rpx solid var(--line);
+  box-shadow: var(--shadow-card);
+  text-align: center;
+}
+.ring {
+  width: 104rpx; height: 104rpx;
+  margin: 0 auto 40rpx;
+  position: relative;
+}
+.ring-track,
+.ring-arc {
+  position: absolute;
+  left: 0; top: 0;
+  width: 104rpx; height: 104rpx;
+  border-radius: 50%;
+  border: 10rpx solid var(--line-2);
+}
+.ring-arc {
+  border-color: #5B6CFF transparent transparent transparent;
+  animation: spin 1.1s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.parsing-title { font-size: 30rpx; font-weight: 600; color: var(--ink); margin-bottom: 16rpx; }
+.parsing-desc { font-size: 23rpx; color: var(--ink-3); margin-bottom: 40rpx; }
+
+.pbar {
+  height: 12rpx;
+  border-radius: 6rpx;
+  background: var(--bg-2);
+  overflow: hidden;
+  margin-bottom: 20rpx;
+}
+.pbar-fill {
+  height: 100%;
+  border-radius: 6rpx;
+  background: linear-gradient(135deg, #5B6CFF 0%, #8B5CF6 100%);
+  transition: width 0.18s linear;
+}
+.pct { font-size: 25rpx; font-weight: 650; color: var(--brand); }
+
+/* ---------- 文件卡片 ---------- */
+.filecard {
+  margin: 0 40rpx 36rpx;
+  padding: 30rpx 32rpx;
+  border-radius: 36rpx;
+  background: var(--surf);
+  border: 2rpx solid var(--line);
+  box-shadow: var(--shadow-card);
+  display: flex;
+  align-items: flex-start;
+  gap: 26rpx;
+}
+.pdf-ico {
+  width: 84rpx; height: 84rpx;
+  border-radius: 26rpx;
+  flex: none;
+  background: linear-gradient(150deg, #FFE4E6, #FFD0D6);
+  color: #D63A5C;
+  font-size: 20rpx;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.theme-dark .pdf-ico {
+  background: linear-gradient(150deg, #3A1E27, #4A2530);
+  color: #FF8CA4;
+}
+.fc-body { flex: 1; min-width: 0; }
+.fc-name {
+  font-size: 27rpx;
+  font-weight: 600;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 10rpx;
+}
+.fc-size { font-size: 22rpx; color: var(--ink-3); }
+
+.ok {
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+  font-size: 22rpx;
+  font-weight: 600;
+  color: var(--ok);
+  margin-top: 14rpx;
+}
+
+/* ---------- 识别结果列表 ---------- */
+.result-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40rpx 24rpx;
+}
+.result-title { font-size: 30rpx; font-weight: 600; color: var(--ink); }
+.result-count { font-size: 23rpx; color: var(--ink-3); }
+
+.rlist { padding: 0 40rpx; }
+.ritem {
+  display: flex;
+  align-items: center;
+  gap: 24rpx;
+  padding: 26rpx 28rpx;
+  background: var(--surf);
+  border: 2rpx solid var(--line);
+  border-radius: 30rpx;
+  margin-bottom: 18rpx;
+  box-shadow: var(--shadow-card);
+}
+.sw {
+  width: 18rpx; height: 68rpx;
+  border-radius: 10rpx;
+  flex: none;
+  background: var(--k);
+}
+.rb { flex: 1; min-width: 0; }
+.rb-name {
+  font-size: 27rpx;
+  font-weight: 600;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 10rpx;
+}
+.rb-meta { font-size: 22rpx; color: var(--ink-3); }
+
+.ck {
+  width: 42rpx; height: 42rpx;
+  border-radius: 50%;
+  flex: none;
+  background: linear-gradient(135deg, #5B6CFF 0%, #8B5CF6 100%);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.18s ease;
+}
+.ck.off {
+  background: transparent;
+  border: 3rpx solid var(--line-2);
+  color: transparent;
+}

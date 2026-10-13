@@ -1,0 +1,253 @@
+<!-- 课表主页 -->
+<view class="app {{isDark ? 'theme-dark' : ''}}" style="--nav-h:{{statusBarHeight + 44}}px">
+
+  <!-- ========== 自定义导航栏 ========== -->
+  <view class="nav" style="padding-top:{{statusBarHeight}}px">
+    <view class="nav-inner">
+      <view class="nav-title" bindlongpress="openMore">我的课表</view>
+
+      <view class="seg" wx:if="{{!isEmpty}}">
+        <view class="seg-item {{view === 'week' ? 'on' : ''}}" bindtap="setWeekView">周</view>
+        <view class="seg-item {{view === 'day' ? 'on' : ''}}" bindtap="setDayView">日</view>
+      </view>
+
+      <view class="nav-actions">
+        <view class="nav-icon" bindtap="toggleTheme">
+          <view class="{{isDark ? 'icon-sun' : 'icon-moon'}}"></view>
+        </view>
+        <view class="nav-icon" bindtap="openMore">
+          <view class="icon-dots"><view></view><view></view><view></view></view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- ================= 空状态 ================= -->
+  <view class="empty" wx:if="{{isEmpty}}">
+    <view class="empty-art">
+      <view class="ea-card">
+        <view class="ea-cell f1"></view>
+        <view class="ea-cell"></view>
+        <view class="ea-cell f2"></view>
+        <view class="ea-cell"></view>
+        <view class="ea-cell f3"></view>
+        <view class="ea-cell"></view>
+        <view class="ea-cell"></view>
+        <view class="ea-cell"></view>
+        <view class="ea-cell"></view>
+      </view>
+      <view class="ea-fab"><view class="fab-plus"></view></view>
+    </view>
+
+    <view class="empty-title">还没有课程</view>
+    <view class="empty-desc">导入教务系统导出的课表 PDF，\n或手动添加你的第一门课程。</view>
+
+    <view class="empty-acts">
+      <button class="btn-grad" bindtap="goImport">导入课表 PDF</button>
+      <button class="btn-line" bindtap="goAdd">手动添加课程</button>
+    </view>
+
+    <view class="empty-link" bindtap="loadDemo">或载入示例课表看看</view>
+  </view>
+
+  <!-- ================= 课表 ================= -->
+  <block wx:else>
+    <view class="page-body">
+
+      <!-- 周次切换 -->
+      <view class="weekbar">
+        <view class="wk-nav" bindtap="prevWeek"><view class="ic-chev ic-left"></view></view>
+        <view class="wk-title">
+          <view class="wk-title-main">{{weekLabel}}</view>
+          <view class="wk-title-sub">{{weekRangeText}}</view>
+        </view>
+        <view class="wk-nav" bindtap="nextWeek"><view class="ic-chev ic-right"></view></view>
+        <view class="today-btn" bindtap="goToday">今天</view>
+      </view>
+
+      <!-- 日期条 -->
+      <view class="days">
+        <view
+          wx:for="{{days}}"
+          wx:key="name"
+          class="day {{item.sel ? 'sel' : ''}} {{item.has ? 'has' : ''}}"
+          data-day="{{index}}"
+          bindtap="pickDay"
+        >
+          <view class="day-name">{{item.name}}</view>
+          <view class="day-date">{{item.date}}</view>
+        </view>
+      </view>
+
+      <!-- ---------- 周视图 ---------- -->
+      <view wx:if="{{view === 'week'}}">
+        <view class="grid-wrap">
+          <view class="time-col">
+            <view
+              class="t-label"
+              wx:for="{{timeLabels}}"
+              wx:key="text"
+              style="top:{{item.top}}rpx"
+            >{{item.text}}</view>
+          </view>
+
+          <view class="grid-area">
+            <view class="today-col" style="{{todayColStyle}}"></view>
+
+            <view
+              wx:for="{{gridCourses}}"
+              wx:key="id"
+              class="course {{item.color}}"
+              style="{{item.style}}"
+              data-id="{{item.id}}"
+              bindtap="openSheet"
+            >
+              <view class="course-name">{{item.name}}</view>
+              <view class="course-room">{{item.room}}</view>
+            </view>
+
+            <view class="nowline" style="top:{{nowTop}}">
+              <view class="nowline-bar"></view>
+              <view class="nowline-dot"></view>
+            </view>
+          </view>
+        </view>
+
+        <view class="grid-foot">
+          <view class="foot-dot"></view>
+          <text>{{footText}}</text>
+        </view>
+      </view>
+
+      <!-- ---------- 日视图 ---------- -->
+      <view wx:else>
+        <view class="day-hero" wx:if="{{hero}}">
+          <view class="day-hero-top">
+            <view class="day-hero-num">{{hero.count}}</view>
+            <view class="day-hero-cap">节课 · 当日安排</view>
+          </view>
+          <view class="day-hero-stats">
+            <view class="dh">
+              <view class="dh-num">{{hero.nowText}}</view>
+              <view class="dh-cap">当前时间</view>
+            </view>
+            <view class="dh">
+              <view class="dh-num">{{hero.remainText}}</view>
+              <view class="dh-cap">{{hero.remainLabel}}</view>
+            </view>
+            <view class="dh">
+              <view class="dh-num">{{hero.nextText}}</view>
+              <view class="dh-cap">{{hero.nextLabel}}</view>
+            </view>
+          </view>
+        </view>
+
+        <view class="tl" wx:if="{{!dayEmpty}}">
+          <view
+            class="tl-item"
+            wx:for="{{dayList}}"
+            wx:key="id"
+            data-id="{{item.id}}"
+            bindtap="openSheet"
+          >
+            <view class="tl-rail">
+              <view class="tl-rail-start">{{item.start}}</view>
+              <view class="tl-rail-end">{{item.end}}</view>
+            </view>
+
+            <view class="tl-card {{item.color}} {{item.isDone ? 'is-done' : ''}}">
+              <view class="tl-head">
+                <view class="tl-name">{{item.name}}</view>
+                <view class="pill {{item.pillClass}}">{{item.pillText}}</view>
+              </view>
+
+              <view class="tl-meta">
+                <view class="chipm">{{item.room}}</view>
+                <view class="chipm">{{item.teacher}}</view>
+                <view class="chipm">{{item.weeks}}</view>
+              </view>
+
+              <view class="tl-prog" wx:if="{{item.isLive}}">
+                <view class="tl-prog-top">
+                  <text>学期进度 · 第 7 周</text>
+                  <text>7 / 16</text>
+                </view>
+                <view class="bar"><view class="bar-fill" style="width:{{item.progress}}%"></view></view>
+              </view>
+            </view>
+          </view>
+        </view>
+
+        <view class="day-empty" wx:if="{{dayEmpty}}">这天没有课，好好休息</view>
+      </view>
+
+      <view class="safe-bottom"></view>
+    </view>
+  </block>
+
+  <!-- 悬浮添加按钮 -->
+  <view class="fab" wx:if="{{!isEmpty}}" bindtap="goAdd">
+    <view class="fab-plus"></view>
+  </view>
+
+  <!-- ================= 课程详情面板 ================= -->
+  <view class="mask {{sheetOn ? 'on' : ''}}" bindtap="closeSheet"></view>
+
+  <view class="sheet {{sheetOn ? 'on' : ''}}" catchtap="noop">
+    <view class="sheet-handle" bindtap="closeSheet"></view>
+
+    <view class="sheet-head">
+      <view class="sheet-badge {{sheet.color}}"></view>
+      <view class="sheet-head-text">
+        <view class="sheet-name">{{sheet.name}}</view>
+        <view class="sheet-sub">{{sheet.dayText}}</view>
+      </view>
+    </view>
+
+    <view class="sheet-time">
+      <view class="st-cell">
+        <view class="st-num">{{sheet.timeText}}</view>
+        <view class="st-cap">{{sheet.statusText}}</view>
+      </view>
+      <view class="st-cell st-right">
+        <view class="st-num">{{sheet.remainText}}</view>
+        <view class="st-cap">本节剩余</view>
+      </view>
+    </view>
+
+    <view class="sheet-rows">
+      <view class="srow">
+        <view class="srow-key">地点</view>
+        <view class="srow-val">{{sheet.room}}</view>
+      </view>
+      <view class="srow">
+        <view class="srow-key">教师</view>
+        <view class="srow-val">{{sheet.teacher}}</view>
+      </view>
+      <view class="srow">
+        <view class="srow-key">周次</view>
+        <view class="srow-val">{{sheet.weeks}}</view>
+      </view>
+    </view>
+
+    <view class="sheet-acts">
+      <view class="act" bindtap="editCourse">
+        <view class="ic-edit"></view>
+        <view class="act-cap">编辑</view>
+      </view>
+      <view class="act" bindtap="shareCourse">
+        <view class="ic-copy"></view>
+        <view class="act-cap">分享</view>
+      </view>
+      <view class="act danger" bindtap="deleteCourse">
+        <view class="ic-trash"></view>
+        <view class="act-cap">删除</view>
+      </view>
+    </view>
+
+    <view class="safe-bottom"></view>
+  </view>
+
+  <!-- Toast -->
+  <view class="toast {{toastOn ? 'on' : ''}}">{{toastMsg}}</view>
+</view>

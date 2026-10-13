@@ -1,0 +1,21 @@
+{
+  "description": "课表小程序 — 周/日双视图 · PDF 导入 · 手动添加",
+  "packOptions": {
+    "ignore": [],
+    "include": []
+  },
+  "setting": {
+    "coverView": true,
+    "es6": true,
+    "enhance": true,
+    "postcss": true,
+    "minified": true,
+    "urlCheck": false,
+    "ignoreDevUnusedFiles": false
+  },
+  "compileType": "miniprogram",
+  "libVersion": "3.5.0",
+  "appid": "touristappid",
+  "projectname": "timetable",
+  "miniprogramRoot": "./"
+}
